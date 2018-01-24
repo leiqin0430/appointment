@@ -10,6 +10,15 @@ Vue.config.productionTip = false
 // const FastClick = require('fastclick')
 FastClick.attach(document.body)
 
+router.beforeEach((to, from, next) => {
+  // console.log(to)
+  if (to.path === '/') {
+    next({path: '/personalCenter'})
+  } else {
+    next()
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
