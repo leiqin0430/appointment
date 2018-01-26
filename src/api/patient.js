@@ -1,20 +1,22 @@
-import shineHttp from '@/utils/shineHttp'
 import HttpConfig from '@/bean/HttpConfig'
+import shineHttp from '@/utils/shineHttp'
 
-const getResourceList = (params, fn1, fn2) => {
+const getPatientList = (caller, params, fn1, fn2) => {
   return shineHttp(new HttpConfig({
-    url: '/res/list',
+    caller: caller,
+    url: '/patient/list',
     method: 'get',
     params: params,
-    reminder: false,
+    reminder: true,
     success: fn1,
     error: fn2
   }))
 }
 
-const saveResource = (params, fn1, fn2) => {
+const savePatient = (caller, params, fn1, fn2) => {
   return shineHttp(new HttpConfig({
-    url: '/res/persist',
+    caller: caller,
+    url: '/patient/save',
     method: 'post',
     params: params,
     reminder: true,
@@ -23,9 +25,10 @@ const saveResource = (params, fn1, fn2) => {
   }))
 }
 
-const delResource = (params, fn1, fn2) => {
+const delPatient = (caller, params, fn1, fn2) => {
   return shineHttp(new HttpConfig({
-    url: '/res/clear',
+    caller: caller,
+    url: '/patient/delete',
     method: 'delete',
     params: params,
     reminder: true,
@@ -35,7 +38,7 @@ const delResource = (params, fn1, fn2) => {
 }
 
 export default {
-  getResourceList,
-  saveResource,
-  delResource
+  getPatientList,
+  savePatient,
+  delPatient
 }
