@@ -29,13 +29,14 @@ export default new Router({
     },
     {
       path: '/patientList',
-      name: 'PatientList',
+      name: 'patientList',
       component: PatientList
     },
     {
       path: '/patient',
-      name: 'Patient',
-      component: Patient
+      name: 'patient',
+      component: Patient,
+      props: (route) => ({ query: route.query.q })
     }
   ]
 })

@@ -19,8 +19,9 @@ const getUserInfo = function () {
  * @param fn2
  * @returns {Promise.<TResult>}
  */
-const getDictList = (params, fn1, fn2) => {
+const getDictList = (caller, params, fn1, fn2) => {
   return shineHttp(new HttpConfig({
+    caller: caller,
     url: '/dict/list',
     method: 'get',
     params: params,

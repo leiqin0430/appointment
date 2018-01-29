@@ -4,8 +4,9 @@ import Vue from 'vue'
 import FastClick from 'fastclick'
 import App from './App'
 import router from './router'
-import { ToastPlugin } from 'vux'
+import { ToastPlugin, ConfirmPlugin } from 'vux'
 Vue.use(ToastPlugin)
+Vue.use(ConfirmPlugin)
 
 Vue.config.productionTip = false
 

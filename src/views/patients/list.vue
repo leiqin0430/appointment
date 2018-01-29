@@ -2,9 +2,9 @@
   <view-box>
     <!--<x-header slot="header" style="width:100%;position:absolute;left:0;top:0;z-index:100;"></x-header>-->
     <x-header slot="header">我的就诊人</x-header>
-    <!--<x-button type="primary" @click.native="goback">primary</x-button>-->
-    <p>您还没有添加就诊人哦，最多可添加7人，快
-      <span style="color: #1AAD19;text-decoration: underline;" @click="addPatient">点击此处</span>去添加吧！</p>
+    <p v-if="!patientList.length" class="patient-message">您还没有添加就诊人哦，最多可添加7人，快
+      <span style="text-decoration: underline;" @click="addPatient">点击此处</span>去添加吧！</p>
+    <p v-else class="patient-message">您已添加<span>{{patientList.length}}</span>人，还可添加<span>{{7 - patientList.length}}</span>人</p>
     <!--<div class="patient-panel">-->
       <!--<div class="patient-row1">-->
         <!--<x-icon class="patient-icon" type="android-contact"></x-icon>-->
@@ -27,6 +27,7 @@
         <x-icon class="patient-icon" type="android-contact"></x-icon>
         <span class="patient-name">{{item.patientName}}</span>
         <div class="patient-type">{{item.tagName || '未知'}}</div>
+        <div style="margin-left: 16px;">{{item.isDefault?'[默认]':''}}</div>
         <x-button mini type="primary" style="margin-right: 15px;" @click.native="editPatient(item)">编辑</x-button>
       </div>
       <flexbox :gutter="0">
@@ -71,14 +72,11 @@ export default {
     })
   },
   methods: {
-    goback () {
-      this.$router.push({ path: '/' })
-    },
     addPatient () {
       this.$router.push({ path: '/patient' })
     },
     editPatient (item) {
-      this.$router.push({ path: '/patient' })
+      this.$router.push({ path: 'patient', query: item })
     }
   }
 }
@@ -87,6 +85,14 @@ export default {
 :root {
   --patient-info-color: #999999;
   --patient-type-color1: #1F83F4;
+}
+.patient-message {
+  font-size: 12px;
+  padding: 5px 0 5px 5px;
+  & span {
+      color: #1AAD19;
+      margin: 0 4px;
+    }
 }
 .patient-panel {
   background-color: #fff;
@@ -105,8 +111,8 @@ export default {
   & .patient-type {
       border: 1px solid var(--patient-type-color1);
       color: var(--patient-type-color1);
-      border-radius: 8px;
-      height: 18px;
+      border-radius: 15px;
+      line-height: 16px;
       font-size: 12px;
       padding: 0 5px;
     }
