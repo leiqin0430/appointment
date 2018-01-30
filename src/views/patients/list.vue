@@ -1,8 +1,7 @@
 <template>
   <view-box>
-    <!--<x-header slot="header" style="width:100%;position:absolute;left:0;top:0;z-index:100;"></x-header>-->
-    <x-header slot="header">我的就诊人</x-header>
-    <p v-if="!patientList.length" class="patient-message">您还没有添加就诊人哦，最多可添加7人，快
+    <x-header slot="header" :left-options="{preventGoBack: true}" @on-click-back="onClickBack" style="width:100%;position:absolute;left:0;top:0;z-index:100;">我的就诊人</x-header>
+    <p v-if="!patientList.length" class="patient-message">您还没有添加就诊人哦，最多可添加<span>7</span>人，快
       <span style="text-decoration: underline;" @click="addPatient">点击此处</span>去添加吧！</p>
     <p v-else class="patient-message">您已添加<span>{{patientList.length}}</span>人，还可添加<span>{{7 - patientList.length}}</span>人</p>
     <!--<div class="patient-panel">-->
@@ -35,10 +34,11 @@
         <flexbox-item><div><div class="patient-tel">{{item.phone}}</div></div></flexbox-item>
       </flexbox>
       <flexbox :gutter="0">
-        <flexbox-item><div><div class="patient-id" style="border-bottom:none">已绑定就诊卡</div></div></flexbox-item>
-        <flexbox-item><div><div class="patient-tel" style="color: #1AAD19;border-bottom:none">查看就诊卡</div></div></flexbox-item>
+        <flexbox-item><div><div class="patient-id" style="border-bottom:none">{{item.cardNo?'已绑定就诊卡':'暂未绑定就诊卡'}}</div></div></flexbox-item>
+        <flexbox-item><div><div class="patient-tel" style="color: #1AAD19;border-bottom:none" @click="bindMedCard(item)">{{item.cardNo?'查看就诊卡':'去绑定'}}</div></div></flexbox-item>
       </flexbox>
     </div>
+    <div slot="bottom" class="add-patient" v-if="patientList.length" @click="addPatient">添加就诊人</div>
   </view-box>
 </template>
 <script>
@@ -67,16 +67,21 @@ export default {
   created () {
     let me = this
     api.getPatientList(me, {openId: '123456'}, function (data) {
-      console.log(data)
       me.patientList = data.page.rows
     })
   },
   methods: {
+    onClickBack () {
+      this.$router.push({ path: '/personalCenter' })
+    },
     addPatient () {
       this.$router.push({ path: '/patient' })
     },
     editPatient (item) {
       this.$router.push({ path: 'patient', query: item })
+    },
+    bindMedCard (item) {
+      this.$router.push({ path: 'medCard', query: item })
     }
   }
 }
@@ -88,7 +93,8 @@ export default {
 }
 .patient-message {
   font-size: 12px;
-  padding: 5px 0 5px 5px;
+  padding: 6px 0 6px 8px;
+  margin-top: 46px;
   & span {
       color: #1AAD19;
       margin: 0 4px;
@@ -132,5 +138,15 @@ export default {
     border-bottom:1px solid #E5E5E5;
     font-size: 14px;
   }
+}
+.add-patient {
+  position: absolute;
+  left:0;
+  bottom: 0;
+  width: 100%;
+  line-height: 40px;
+  text-align: center;
+  background-color: #1AAD19;
+  color: #fff;
 }
 </style>

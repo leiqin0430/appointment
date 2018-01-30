@@ -10,6 +10,7 @@ const PersonalCenter = () => import('@/views/personalCenter')
 const HospitalInfo = () => import('@/views/hospitalInfo')
 const PatientList = () => import('@/views/patients/list')
 const Patient = () => import('@/views/patients/patient')
+const MedCard = () => import('@/views/patients/medCard')
 
 export default new Router({
   routes: [
@@ -36,6 +37,12 @@ export default new Router({
       path: '/patient',
       name: 'patient',
       component: Patient,
+      props: (route) => ({ query: route.query.q })
+    },
+    {
+      path: '/medCard',
+      name: 'medCard',
+      component: MedCard,
       props: (route) => ({ query: route.query.q })
     }
   ]

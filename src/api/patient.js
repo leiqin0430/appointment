@@ -7,7 +7,7 @@ const getPatientList = (caller, params, fn1, fn2) => {
     url: '/patient/list',
     method: 'get',
     params: params,
-    reminder: true,
+    reminder: false,
     success: fn1,
     error: fn2
   }))

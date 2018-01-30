@@ -1,15 +1,16 @@
 <template>
   <view-box>
-    <x-header slot="header">{{titleType}}就诊人</x-header>
-    <group title="就诊人基本信息" label-width="4.5em" label-margin-right="2em" label-align="right">
+    <x-header slot="header" :left-options="{preventGoBack: true}" @on-click-back="onClickBack" style="width:100%;position:absolute;left:0;top:0;z-index:100;">{{titleType}}就诊人</x-header>
+    <!--<x-header slot="header">{{titleType}}就诊人</x-header>-->
+    <group title="就诊人信息" label-width="4.5em" label-margin-right="2em" label-align="right" style="margin-top: calc(46px + 0.7em);">
       <x-input title="姓名" v-model="patientInfo.patientName" placeholder="请输入姓名" is-type="china-name" required></x-input>
       <x-input title="身份证号" v-model="patientInfo.idCard" placeholder="请输入身份证号" required></x-input>
       <selector title="性别" v-model="patientInfo.sex" placeholder="请选择性别" :options="genderList"></selector>
-      <x-input title="年龄" v-model="patientInfo.age" type="text" placeholder="请输入年龄" required></x-input>
+      <x-input title="年龄" v-model="patientInfo.age" placeholder="请输入年龄" required></x-input>
       <x-input title="手机号码" v-model="patientInfo.phone" placeholder="请输入手机号码" keyboard="number" is-type="china-mobile" required></x-input>
     </group>
     <group>
-      <x-switch title="设为默认就诊人" :value-map="['0', '1']" v-model="patientInfo.isDefault"></x-switch>
+      <x-switch title="设为默认就诊人" :value-map="[0, 1]" v-model="patientInfo.isDefault"></x-switch>
     </group>
     <!--<group>-->
     <checker
@@ -27,8 +28,8 @@
     <!--</group>-->
     <group>
     <x-button type="primary" @click.native="savePatient">保存</x-button>
-    <x-button type="warn" @click.native="delPatient" v-if="patientInfo.id">删除</x-button>
-    <!--<x-button type="default" @click.native="cancelDelPatient" v-if="!patientInfo.id">取消</x-button>-->
+    <x-button type="default" @click.native="delPatient" :disabled="!patientInfo.id">删除</x-button>
+    <!--<x-button type="warn" @click.native="cancelDelPatient" v-if="!patientInfo.id">取消</x-button>-->
     </group>
   </view-box>
 </template>
@@ -67,7 +68,7 @@
           sex: '1',
           age: '',
           phone: '',
-          isDefault: '0',
+          isDefault: 0,
           tagCode: '1',
           openId: '123456'
         }
@@ -97,6 +98,9 @@
     methods: {
       onItemClick (value, disabled) {
         console.log(value, disabled)
+      },
+      onClickBack () {
+        this.$router.push({ path: '/patientList' })
       },
       savePatient () {
         let me = this
