@@ -15,7 +15,7 @@
       </div>
     </div>
     <group gutter="10px">
-      <cell title="我的预约" value="查看全部预约" link="/patientList"></cell>
+      <cell title="我的预约" value="查看全部预约" link="/orderList"></cell>
       <cell-box style="justify-content: space-around;">
         <div style="text-align: center;">
           <x-icon slot="icon" type="android-clipboard" style="fill: #00A249"></x-icon>

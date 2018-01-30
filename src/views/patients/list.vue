@@ -24,10 +24,10 @@
     <div class="patient-panel" v-for="(item, index) in patientList" :key="index">
       <div class="patient-row1">
         <x-icon class="patient-icon" type="android-contact"></x-icon>
-        <span class="patient-name">{{item.patientName}}</span>
+        <span>{{item.patientName}}</span>
         <div class="patient-type">{{item.tagName || '未知'}}</div>
         <div style="margin-left: 16px;">{{item.isDefault?'[默认]':''}}</div>
-        <x-button mini type="primary" style="margin-right: 15px;" @click.native="editPatient(item)">编辑</x-button>
+        <x-button mini type="primary" style="margin-right: 30px;" @click.native="editPatient(item)">编辑</x-button>
       </div>
       <flexbox :gutter="0">
         <flexbox-item><div><div class="patient-id">{{item.idCard}}</div></div></flexbox-item>
@@ -42,20 +42,13 @@
   </view-box>
 </template>
 <script>
-import { ViewBox, XHeader, Swiper, SwiperItem, XButton, Group, Cell, CellBox, Panel, Radio, Flexbox, FlexboxItem } from 'vux'
+import { ViewBox, XHeader, XButton, Flexbox, FlexboxItem } from 'vux'
 import api from '@/api/patient'
 export default {
   components: {
     ViewBox,
     XHeader,
-    Swiper,
-    SwiperItem,
     XButton,
-    Group,
-    Cell,
-    CellBox,
-    Panel,
-    Radio,
     Flexbox,
     FlexboxItem
   },
@@ -93,7 +86,7 @@ export default {
 }
 .patient-message {
   font-size: 12px;
-  padding: 6px 0 6px 8px;
+  padding: 6px 0 6px 10px;
   margin-top: 46px;
   & span {
       color: #1AAD19;
@@ -108,11 +101,8 @@ export default {
       padding-top: 10px;
   & .patient-icon {
       display: block;
-      margin-left: 9px;
+      margin: 0 5px 0 27px;
       fill: #C0C0C0
-    }
-  & .patient-name {
-      margin: 0 5px;
     }
   & .patient-type {
       border: 1px solid var(--patient-type-color1);
@@ -121,10 +111,11 @@ export default {
       line-height: 16px;
       font-size: 12px;
       padding: 0 5px;
+      margin-left: 5px;
     }
   }
   & .patient-id {
-    margin-left: 38px;
+    margin-left: 56px;
     padding: 8px 0;
     color: var(--patient-info-color);
     border-bottom:1px solid #E5E5E5;
@@ -132,7 +123,7 @@ export default {
   }
   & .patient-tel {
     text-align: right;
-    margin-right: 15px;
+    margin-right: 30px;
     padding: 8px 0;
     color: var(--patient-info-color);
     border-bottom:1px solid #E5E5E5;
