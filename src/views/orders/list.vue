@@ -61,7 +61,7 @@
   </view-box>
 </template>
 <script>
-  import { ViewBox, XHeader, Tab, TabItem, XButton, Group, Cell, CellBox, Panel, Flexbox, FlexboxItem, Sticky} from 'vux'
+  import { ViewBox, XHeader, Tab, TabItem, XButton, Group, Cell, CellBox, Panel, Flexbox, FlexboxItem, Sticky } from 'vux'
   export default {
     components: {
       ViewBox,
