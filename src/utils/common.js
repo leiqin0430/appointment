@@ -31,8 +31,39 @@ const getDictList = (caller, params, fn1, fn2) => {
   }))
 }
 
+const getTagColor = (list, field) => {
+  list.forEach(item => {
+    if (item) {
+      switch (item[field]) {
+        case '001':
+          item.tagColor = '#1F83F4'
+          break
+        case '002':
+          item.tagColor = '#FC378C'
+          break
+        case '003':
+          item.tagColor = '#04be02'
+          break
+        case '004':
+          item.tagColor = '#FF9900'
+          break
+        case '005':
+          item.tagColor = '#37AEFC'
+          break
+        case '006':
+          item.tagColor = '#6A5ACD'
+          break
+        default:
+          item.tagColor = '#C0C0C0'
+      }
+    }
+  })
+  return list
+}
+
 export default {
   constObj,
   getUserInfo,
-  getDictList
+  getDictList,
+  getTagColor
 }

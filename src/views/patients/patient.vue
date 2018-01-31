@@ -15,45 +15,34 @@
     <!--<group>-->
     <checker
       v-model="patientInfo.tagCode"
-      default-item-class="demo4-item"
-      selected-item-class="demo4-item-selected"
-      disabled-item-class="demo4-item-disabled"
+      default-item-class="rtype-item"
+      :selected-item-class="'rtype-item-selected'+patientInfo.tagCode"
+      :radio-required="true"
       style="padding-left: 15px;">
-      <!--<checker-item :value="'1'" @on-item-click="onItemClick">自己</checker-item>-->
-      <!--<checker-item :value="'2'" @on-item-click="onItemClick">父母</checker-item>-->
-      <!--<checker-item :value="'3'" @on-item-click="onItemClick">子女</checker-item>-->
-      <!--<checker-item :value="'4'" @on-item-click="onItemClick">朋友</checker-item>-->
-      <checker-item v-for="(type, index) in rtypeList" :value="type.dictCode" :key="index" @on-item-click="onItemClick">{{type.dictName}}</checker-item>
+      <checker-item v-for="(item, index) in rtypeList" :style="{borderColor: item.tagColor, color: item.tagColor}" :value="item.dictCode" :key="index" @on-item-click="onItemClick">{{item.dictName}}</checker-item>
     </checker>
     <!--</group>-->
     <group>
-    <x-button type="primary" @click.native="savePatient">保存</x-button>
-    <x-button type="default" @click.native="delPatient" :disabled="!patientInfo.id">删除</x-button>
-    <!--<x-button type="warn" @click.native="cancelDelPatient" v-if="!patientInfo.id">取消</x-button>-->
+      <x-button type="primary" @click.native="savePatient">保存</x-button>
+      <x-button type="default" @click.native="delPatient" :disabled="!patientInfo.id">删除</x-button>
     </group>
   </view-box>
 </template>
 <script>
-  import { ViewBox, XHeader, XInput, XSwitch, Selector, Checker, CheckerItem, XButton, Group, Cell, CellBox, Panel, Radio, Flexbox, FlexboxItem } from 'vux'
+  import { ViewBox, XHeader, Group, XInput, XSwitch, Selector, Checker, CheckerItem, XButton } from 'vux'
   import api from '@/api/patient'
   import common from '@/utils/common'
   export default {
     components: {
       ViewBox,
       XHeader,
+      Group,
       XInput,
       XSwitch,
       Selector,
       Checker,
       CheckerItem,
-      XButton,
-      Group,
-      Cell,
-      CellBox,
-      Panel,
-      Radio,
-      Flexbox,
-      FlexboxItem
+      XButton
     },
     data () {
       return {
@@ -65,11 +54,11 @@
           id: null,
           patientName: '',
           idCard: '',
-          sex: '1',
+          sex: 1,
           age: '',
           phone: '',
           isDefault: 0,
-          tagCode: '1',
+          tagCode: '',
           openId: '123456'
         }
       }
@@ -86,12 +75,20 @@
       })
       // 与就诊人关系
       common.getDictList(me, {type: 'RTYPE'}, function (data) {
-        me.rtypeList = data.list
+//        me.rtypeList = data.list
+        me.rtypeList = common.getTagColor(data.list, 'dictCode')
       })
-//      console.log(this.$route.query)
+
       let obj = this.$route.query
       if (Object.keys(obj).length !== 0) {
-        this.patientInfo = obj
+        this.patientInfo.id = obj.id
+        this.patientInfo.patientName = obj.patientName
+        this.patientInfo.idCard = obj.idCard
+        this.patientInfo.sex = obj.sex
+        this.patientInfo.age = obj.age
+        this.patientInfo.phone = obj.phone
+        this.patientInfo.isDefault = obj.isDefault
+        this.patientInfo.tagCode = obj.tagCode
         this.titleType = '编辑'
       }
     },
@@ -128,19 +125,38 @@
   }
 </script>
 <style>
-  .demo4-item {
-    background-color: #ddd;
-    color: #222;
+  .rtype-item {
+    background-color: #fff;
+    /*color: #222;*/
     font-size: 12px;
     padding: 0 8px;
     margin-right: 10px;
     border-radius: 15px;
+    border-width: 1px;
+    border-style: solid;
   }
-  .demo4-item-selected {
-    background-color: #FF3B3B;
-    color: #fff;
+  .rtype-item-selected001 {
+    background-color: #1F83F4;
+    color: #fff !important;
   }
-  .demo4-item-disabled {
-    color: #999;
+  .rtype-item-selected002 {
+    background-color: #FC378C;
+    color: #fff !important;
+  }
+  .rtype-item-selected003 {
+    background-color: #04be02;
+    color: #fff !important;
+  }
+  .rtype-item-selected004 {
+    background-color: #FF9900;
+    color: #fff !important;
+  }
+  .rtype-item-selected005 {
+    background-color: #37AEFC;
+    color: #fff !important;
+  }
+  .rtype-item-selected006 {
+    background-color: #6A5ACD;
+    color: #fff !important;
   }
 </style>

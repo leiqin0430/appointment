@@ -46,6 +46,9 @@
       <cell title="设置" link="/patientList">
         <x-icon slot="icon" type="android-settings" style="display: block;margin-right: 5px;fill: #A1C5F2"></x-icon>
       </cell>
+      <cell title="帮助" link="/patientList">
+        <x-icon slot="icon" type="help-circled" style="display: block;margin-right: 5px;fill: #88cffd"></x-icon>
+      </cell>
     </group>
   </view-box>
 </template>
