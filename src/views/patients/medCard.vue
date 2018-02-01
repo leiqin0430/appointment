@@ -17,6 +17,7 @@
 <script>
   import { ViewBox, XHeader, XInput, Selector, XButton, Group } from 'vux'
   import common from '@/utils/common'
+  import api from '@/api/patient'
   export default {
     components: {
       ViewBox,
@@ -67,14 +68,14 @@
         this.$router.push({ path: '/patientList' })
       },
       saveCard () {
-//        let me = this
-//        api.savePatient(me, this.cardInfo, function (data) {
-//          me.$router.push({ path: '/patientList' })
-//        })
-        console.log(this.cardInfo)
+        let me = this
+        // 绑定
+        api.bindMedCard(me, {id: this.cardInfo.id, cardNo: this.cardInfo.cardNo, cardType: this.cardInfo.cardType}, function (data) {
+          me.$router.push({ path: '/patientList' })
+        })
       },
       delCard () {
-//        let me = this
+        let me = this
         this.$vux.confirm.show({
           title: '系统提示',
           content: '您确定要解绑该就诊卡吗？',
@@ -82,10 +83,10 @@
             console.log('plugin cancel')
           },
           onConfirm () {
-            console.log('plugin confirm')
-//            api.delCard(me, {id: me.cardInfo.id}, function (data) {
-//              me.$router.push({ path: '/patientList' })
-//            })
+            // 解绑
+            api.bindMedCard(me, {id: me.cardInfo.id, cardNo: '', cardType: ''}, function (data) {
+              me.$router.push({ path: '/patientList' })
+            })
           }
         })
       }

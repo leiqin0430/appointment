@@ -37,8 +37,21 @@ const delPatient = (caller, params, fn1, fn2) => {
   }))
 }
 
+const bindMedCard = (caller, params, fn1, fn2) => {
+  return shineHttp(new HttpConfig({
+    caller: caller,
+    url: '/patient/save',
+    method: 'post',
+    params: params,
+    reminder: true,
+    success: fn1,
+    error: fn2
+  }))
+}
+
 export default {
   getPatientList,
   savePatient,
-  delPatient
+  delPatient,
+  bindMedCard
 }

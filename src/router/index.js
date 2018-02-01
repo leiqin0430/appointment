@@ -12,6 +12,8 @@ const PatientList = () => import('@/views/patients/list')
 const Patient = () => import('@/views/patients/patient')
 const MedCard = () => import('@/views/patients/medCard')
 const OrderList = () => import('@/views/orders/list')
+const Dept = () => import('@/views/dept/dept')
+const Doctor = () => import('@/views/dept/doctor')
 
 export default new Router({
   routes: [
@@ -50,6 +52,16 @@ export default new Router({
       path: '/orderList',
       name: 'orderList',
       component: OrderList
+    },
+    {
+      path: '/dept',
+      name: 'dept',
+      component: Dept
+    },
+    {
+      path: '/doctor',
+      name: 'doctor',
+      component: Doctor
     }
   ]
 })
