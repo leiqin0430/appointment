@@ -4,24 +4,30 @@
 
     <search style="margin-top: 46px;"
             placeholder="搜索科室"
-      @on-result-click="resultClick"
       @on-change="getResult"
-      :results="results"
       v-model="searchValue"
       @on-focus="onFocus"
       @on-cancel="onCancel"
       @on-submit="onSubmit"
-      ref="search"></search>
+      ref="search">
+      <div class="dept-search-container">
+        <!--<deptItem v-for="(item, index) in searchResults" :dept-name="item.name" :search-value="searchValue" :key="index"></deptItem>-->
+        <div class="dept-item" v-for="(item, index) in searchResults" :key="index" @click="resultClick(item)">
+          <span v-if="item.name.indexOf(searchValue)===0"><span style="color: #EB6565;">{{searchValue}}</span><span>{{item.name.substring(searchValue.length)}}</span></span>
+          <span v-else><span>{{item.name.substring(0, item.name.indexOf(searchValue))}}</span><span style="color: #EB6565;">{{searchValue}}</span><span>{{item.name.substring(item.name.indexOf(searchValue)+searchValue.length)}}</span></span>
+        </div>
+      </div>
+    </search>
 
     <div class="dept-container">
       <div class="dept-left">
-        <div class="list" :style="{backgroundColor: item.isSelected?'#fff':''}" v-for="(item, index) in parentDept" :key="index" @click="getChildren(item, index)">
+        <div class="list" :style="{backgroundColor: item.isSelected?'#fff':''}" v-for="(item, index) in parentDept" :key="index" @click="selectParentDept(item, index)">
           <div :class="{selected: item.isSelected}"></div>
           <span>{{item.name}}</span>
         </div>
       </div>
       <div class="dept-right">
-        <div class="list" :style="{color: item.textColor}" v-for="(item, index) in childrenDept" :key="index" @click="changeDeptColor(index)">
+        <div class="list" v-for="(item, index) in childrenDept" :key="index" @click="selectChildDept(item)">
           <span>{{item.name}}</span>
         </div>
       </div>
@@ -30,15 +36,17 @@
 </template>
 <script>
   import { XHeader, Search } from 'vux'
+//  import deptItem from '@/components/deptItem.vue'
   import api from '@/api/dept'
   export default {
     components: {
       XHeader,
       Search
+//      deptItem
     },
     data () {
       return {
-        results: [],
+        searchResults: [],
         searchValue: '',
         parentDept: [],
         childrenDept: []
@@ -54,11 +62,6 @@
               item.isSelected = true
               api.getChildrenDept(me, {parentId: item.deptId}, function (data) {
                 me.childrenDept = data.page.rows
-                me.childrenDept.forEach(item => {
-                  if (item) {
-                    item.textColor = 'red'
-                  }
-                })
               })
             } else {
               item.isSelected = false
@@ -71,15 +74,10 @@
       onClickBack () {
         this.$router.push({ path: '/home' })
       },
-      getChildren (item, index) {
+      selectParentDept (item, index) {
         let me = this
         api.getChildrenDept(me, {parentId: item.deptId}, function (data) {
           me.childrenDept = data.page.rows
-          me.childrenDept.forEach(item => {
-            if (item) {
-              item.textColor = 'red'
-            }
-          })
         })
         me.parentDept.forEach(item => {
           if (item.isSelected) {
@@ -88,35 +86,23 @@
         })
         me.parentDept[index].isSelected = true
       },
-      changeDeptColor (index) {
-        this.childrenDept.forEach(item => {
-          if (item.textColor === '#00A249') {
-            item.textColor = 'red'
-          }
-        })
-        this.childrenDept[index].textColor = '#00A249'
-        console.log(this.childrenDept)
+      selectChildDept (item) {
+        this.$router.push({ path: 'doctor', query: item })
       },
       setFocus () {
         this.$refs.search.setFocus()
       },
       resultClick (item) {
-//        window.alert('you click the result item: ' + JSON.stringify(item))
-        this.searchValue = item.deptId
-        this.$router.push({path: '/doctor'})
+        this.$router.push({ path: 'doctor', query: item })
       },
       getResult (val) {
-        console.log('on-change', val)
-//        this.results = val ? getResult(this.value) : []
-        this.results = new Array(8).fill({title: 'test', name: 'search'})
+        let me = this
+        api.getChildrenDept(me, {name: val}, function (data) {
+          me.searchResults = data.page.rows
+        })
       },
       onSubmit () {
-        this.$refs.search.setBlur()
-        this.$vux.toast.show({
-          type: 'text',
-          position: 'top',
-          text: 'on submit'
-        })
+        console.log('on submit')
       },
       onFocus () {
         console.log('on focus')
@@ -128,6 +114,29 @@
   }
 </script>
 <style>
+  .dept-search-container {
+    & .dept-item {
+        padding: 10px 15px;
+        position: relative;
+      }
+    & .dept-item:after {
+        content: " ";
+        position: absolute;
+        top: 43px;
+        right: 0;
+        height: 1px;
+        border-bottom: 1px solid #D9D9D9;
+        color: #D9D9D9;
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5);
+        left: 15px;
+      }
+    & .dept-item:last-child:after {
+      left: 0;
+      }
+  }
   .dept-container {
     /*margin-top: 90px;*/
     height: 100%;

@@ -29,7 +29,7 @@
         <span>{{item.patientName}}</span>
         <div class="patient-type" :style="{borderColor: item.tagColor, color: item.tagColor}">{{item.tagName || '未知'}}</div>
         <div style="margin-left: 16px;">{{item.isDefault?'[默认]':''}}</div>
-        <x-button mini type="primary" style="margin-right: 30px;" @click.native="editPatient(item)">编辑</x-button>
+        <x-button mini type="primary" style="margin-right: 30px; padding: 0 1em;" @click.native="editPatient(item)">编辑</x-button>
       </div>
       <flexbox :gutter="0">
         <flexbox-item><div><div class="patient-id">{{item.idCard}}</div></div></flexbox-item>

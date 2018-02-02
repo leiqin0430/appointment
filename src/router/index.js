@@ -61,7 +61,8 @@ export default new Router({
     {
       path: '/doctor',
       name: 'doctor',
-      component: Doctor
+      component: Doctor,
+      props: (route) => ({ query: route.query.q })
     }
   ]
 })
