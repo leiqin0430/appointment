@@ -14,7 +14,7 @@
         <flexbox-item><div class="appoint-title" @click="selectDept">对症预约</div></flexbox-item>
       </flexbox>
     </div>
-    <group gutter="10px" class="doctor-container">
+    <group gutter="10px" class="recommend-doctors">
       <cell title="推荐医生" value="查看全部" link="/orderList"></cell>
     </group>
     <panel :list="list" :type="type" @on-img-error="onImgError" style="margin-top: 0;"></panel>
@@ -113,10 +113,10 @@
         padding-top: 8px;
       }
   }
-  .doctor-container div:first-child:after {
+  .recommend-doctors div:first-child:after {
     border-bottom: none;
   }
-  .doctor-container div:first-child:before {
+  .recommend-doctors div:first-child:before {
     border-top: none;
   }
 </style>

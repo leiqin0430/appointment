@@ -1,7 +1,7 @@
 import HttpConfig from '@/bean/HttpConfig'
 import shineHttp from '@/utils/shineHttp'
 
-const getDoctorList = (caller, params, fn1, fn2) => {
+const getDoctorsByDept = (caller, params, fn1, fn2) => {
   return shineHttp(new HttpConfig({
     caller: caller,
     url: '/doctor/dept',
@@ -13,10 +13,10 @@ const getDoctorList = (caller, params, fn1, fn2) => {
   }))
 }
 
-const getChildrenDept = (caller, params, fn1, fn2) => {
+const getDoctorsByDate = (caller, params, fn1, fn2) => {
   return shineHttp(new HttpConfig({
     caller: caller,
-    url: '/dept/children',
+    url: '/doctor/date',
     method: 'get',
     params: params,
     reminder: false,
@@ -26,6 +26,6 @@ const getChildrenDept = (caller, params, fn1, fn2) => {
 }
 
 export default {
-  getDoctorList,
-  getChildrenDept
+  getDoctorsByDept,
+  getDoctorsByDate
 }
