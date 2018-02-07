@@ -18,14 +18,16 @@
       default-item-class="rtype-item"
       :selected-item-class="'rtype-item-selected'+patientInfo.tagCode"
       :radio-required="true"
-      style="padding-left: 15px;">
+      style="padding-left: 15px;margin-top: 5px;">
       <checker-item v-for="(item, index) in rtypeList" :style="{borderColor: item.tagColor, color: item.tagColor}" :value="item.dictCode" :key="index" @on-item-click="onItemClick">{{item.dictName}}</checker-item>
     </checker>
     <!--</group>-->
-    <group>
+    <!--<group>-->
+    <div style="padding: 20px 15px 0 15px;">
       <x-button type="primary" @click.native="savePatient">保存</x-button>
       <x-button type="default" @click.native="delPatient" :disabled="!patientInfo.id">删除</x-button>
-    </group>
+    <!--</group>-->
+    </div>
   </view-box>
 </template>
 <script>

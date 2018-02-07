@@ -61,9 +61,48 @@ const getTagColor = (list, field) => {
   return list
 }
 
+const dateFormat = (date) => {
+  // let now = new Date()
+  let y = date.getFullYear()
+  let m = date.getMonth() + 1
+  let d = date.getDate()
+  let w = date.getDay()
+  let mm = (m > 9) ? m : ('0' + m)
+  let dd = (d > 9) ? d : ('0' + d)
+  let ww = ''
+  switch (w) {
+    case 0:
+      ww = '周日'
+      break
+    case 1:
+      ww = '周一'
+      break
+    case 2:
+      ww = '周二'
+      break
+    case 3:
+      ww = '周三'
+      break
+    case 4:
+      ww = '周四'
+      break
+    case 5:
+      ww = '周五'
+      break
+    case 6:
+      ww = '周六'
+      break
+    default:
+      ww = ''
+  }
+
+  return {dateStr: y + '-' + mm + '-' + dd, week: ww, mdStr: mm + '-' + dd}
+}
+
 export default {
   constObj,
   getUserInfo,
   getDictList,
-  getTagColor
+  getTagColor,
+  dateFormat
 }

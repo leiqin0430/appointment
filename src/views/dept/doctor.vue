@@ -8,7 +8,7 @@
     </tab>
 
     <div v-if="selectedIndex===0" style="height: calc(100% - 90px);overflow-y: scroll;">
-      <div class="doctor-panel" v-for="(item, index) in doctors" :key="index">
+      <div class="doctor-panel" v-for="(item, index) in doctors" :key="index" @click="onSelectDoctor(item)">
         <div class="headImg"></div>
         <div class="content">
           <div class="row1">
@@ -31,39 +31,19 @@
 
     <div v-else style="height: calc(100% - 90px);overflow: hidden;">
       <div class="datetime-line">
-        <x-icon type="chevron-left" size="16" style="fill: #999;"></x-icon>
-        <div class="date">
-          <div>周一</div>
-          <div>02-05</div>
+        <div class="last" @click="switchWeek('last')">
+          <x-icon type="chevron-left" size="16" style="fill: #999;margin: 0 5px;"></x-icon>
         </div>
-        <div class="date">
-          <div>周一</div>
-          <div>02-05</div>
+        <div class="date" v-for="(item, index) in dateArr" :key="index" :style="{borderLeft: index===0?'none':'1px solid #eee'}" :class="{'selected': item.isSelected}" @click="onClickDate(index, item.dateStr)">
+          <div>{{item.week}}</div>
+          <div>{{item.mdStr}}</div>
         </div>
-        <div class="date">
-          <div>周一</div>
-          <div>02-05</div>
+        <div class="next" @click="switchWeek('next')">
+          <x-icon type="chevron-right" size="16" style="fill: #999;margin: 0 5px;"></x-icon>
         </div>
-        <div class="date">
-          <div>周一</div>
-          <div>02-05</div>
-        </div>
-        <div class="date">
-          <div>周一</div>
-          <div>02-05</div>
-        </div>
-        <div class="date">
-          <div>周一</div>
-          <div>02-05</div>
-        </div>
-        <div class="date">
-          <div>周一</div>
-          <div>02-05</div>
-        </div>
-        <x-icon type="chevron-right" size="16" style="fill: #999;"></x-icon>
       </div>
-      <div style="height: calc(100% - 51px);overflow-y: scroll;">
-        <div class="doctor-panel" v-for="(item, index) in doctors1" :key="index">
+      <div style="height: calc(100% - 45px);overflow-y: scroll;">
+        <div class="doctor-panel" v-for="(item, index) in doctors1" :key="index" @click="onSelectDoctor(item)">
           <div class="headImg"></div>
           <div class="content">
             <div class="row1">
@@ -92,6 +72,7 @@
 <script>
   import { XHeader, Tab, TabItem, Flexbox, FlexboxItem } from 'vux'
   import api from '@/api/doctor'
+  import common from '@/utils/common'
   export default {
     components: {
       XHeader,
@@ -104,6 +85,8 @@
       return {
         titleName: '',
         selectedIndex: 1,
+        today: Date.parse(new Date()),
+        dateArr: [],
         selectedDate: '2017-12-12',
         doctors: [
           {
@@ -331,7 +314,20 @@
         ]
       }
     },
+    computed: {
+//      dateline: function () {
+//        let now = new Date()
+//      }
+    },
     created () {
+      this.tempDate = this.today
+      let date = new Date(this.today)
+      for (let i = 0; i < 7; i++) {
+        let dateObj = common.dateFormat(new Date(date.setDate(date.getDate() + (i === 0 ? 0 : 1))))
+        dateObj.isSelected = i === 0
+        this.dateArr.push(dateObj)
+      }
+
       let me = this
       let obj = this.$route.query
       this.titleName = obj.name
@@ -352,6 +348,37 @@
       },
       onItemClick (index) {
         console.log(index)
+      },
+      onClickDate (index, dateStr) {
+        this.dateArr.forEach((item, i, arr) => {
+          if (item.isSelected) {
+            item.isSelected = false
+          }
+        })
+        this.dateArr[index].isSelected = true
+      },
+      switchWeek (flag) {
+        this.dateArr = []
+        let date = new Date(this.tempDate)
+        if (flag === 'last') {
+          for (let i = 0; i < 7; i++) {
+            let dateObj = common.dateFormat(new Date(date.setDate(date.getDate() - 1)))
+            dateObj.isSelected = false
+            this.dateArr.unshift(dateObj)
+          }
+          this.tempDate = date.getTime()
+        } else {
+          date.setDate(date.getDate() + 7)
+          this.tempDate = date.getTime()
+          for (let i = 0; i < 7; i++) {
+            let dateObj = common.dateFormat(new Date(date.setDate(date.getDate() + (i === 0 ? 0 : 1))))
+            dateObj.isSelected = false
+            this.dateArr.push(dateObj)
+          }
+        }
+      },
+      onSelectDoctor (item) {
+        this.$router.push({ path: 'doctorDetail', query: item })
       }
     }
   }
@@ -453,18 +480,30 @@
   }
 
   .datetime-line {
+    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: space-around;
     background-color: #fff;
     border-bottom: 1px solid #eee;
+    & .last {
+        display: flex;
+        align-items: center;
+        height: 44px;
+      }
     & .date {
         text-align: center;
         color: var(--doctor-info-color);
-        border-left: 1px solid #eee;
+        width: calc((100% - 52px) / 7);
       }
-  & .date:first-of-type {
-    border-left: none;
-    }
+    & .selected {
+        background-color: #00A249;
+        color: #fff;
+      }
+    & .next {
+        display: flex;
+        align-items: center;
+        height: 44px;
+      }
   }
 </style>

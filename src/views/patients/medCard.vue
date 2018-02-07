@@ -8,10 +8,12 @@
       <x-input title="身份证号" v-model="cardInfo.idCard" placeholder="请输入身份证号" required></x-input>
       <x-input title="卡号" v-model="cardInfo.cardNo" placeholder="请输入卡号" required></x-input>
     </group>
-    <group>
+    <!--<group>-->
+    <div style="padding: 20px 15px 0 15px;">
       <x-button type="primary" @click.native="saveCard">确定</x-button>
       <x-button type="default" @click.native="delCard" :disabled="titleType==='绑定'">解绑</x-button>
-    </group>
+    </div>
+    <!--</group>-->
   </view-box>
 </template>
 <script>
